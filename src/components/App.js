@@ -1,7 +1,29 @@
 import '../styles/App.scss';
 import '../fonts/KgTenThousandReasons-R1ll.ttf';
+import { useState } from 'react';
 
 function App() {
+  const [writeLetter , setWriteLetter] = useState('');
+  const [solution , setSolution] = useState('macarron');
+  const [numberOfErrors , setNumberOfErrors] = useState(0);
+  //const [count , setCount] = useState(0);
+  
+  /*
+  Acciones que hay que hacer al arrancar la pag:
+  - todo en vacio (muñeco, letras...)
+  - reset nueva palabra del API
+  Acciones despues del evento de la usuaria:
+  - añadir letra y comprobar si esta se pinta y si no letras fallamas + monigote
+  - escribir msj error si repites letra (falladas o acertadas)
+  */
+  const handleClickCount = (ev) => {
+    ev.preventDefault();
+    console.log('holis')
+    setNumberOfErrors(numberOfErrors+1)
+  }
+  const handleInput = (event) => {
+  }
+
   return (
     <div className="page">
       <header>
@@ -36,16 +58,18 @@ function App() {
           </div>
           <form className="form">
             <label className="title" htmlFor="last-letter">Escribe una letra:</label>
-            <input
-              autocomplete="off"
+            <input onChange={ handleInput
+            }
+              autoComplete="off"
               className="form__input"
-              maxlength="1"
+              maxLength="1"
               type="text"
               name="last-letter"
-              id="last-letter" />
+              id="last-letter" /> 
+               <button onClick={handleClickCount}>Contador</button>
           </form>
         </section>
-        <section className="dummy error-5">
+        <section className={"dummy error-" + numberOfErrors}>
           <span className="error-13 eye"></span>
           <span className="error-12 eye"></span>
           <span className="error-11 line"></span>
@@ -60,6 +84,7 @@ function App() {
           <span className="error-2 line"></span>
           <span className="error-1 line"></span>
         </section>
+      
       </main>
     </div>
   );
