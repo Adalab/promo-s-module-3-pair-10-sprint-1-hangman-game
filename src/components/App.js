@@ -3,11 +3,17 @@ import '../fonts/KgTenThousandReasons-R1ll.ttf';
 import { useState } from 'react';
 
 function App() {
-  const [writeLetter , setWriteLetter] = useState('');
-  const [solution , setSolution] = useState('macarron');
-  const [numberOfErrors , setNumberOfErrors] = useState(0);
-  //const [count , setCount] = useState(0);
-  
+
+  //Variables de estado
+  // const [writeLetter, setWriteLetter] = useState('');
+  // const [solution, setSolution] = useState('macarron');
+  const [numberOfErrors, setNumberOfErrors] = useState(0);
+  const [lastLetter, setLastLetter] = useState('');
+
+  //Variables comunes
+  const letterOk = /^[a-zA-Zñáéíóúü]$/;
+  //test: devuelve verdadero o falso si la cadena de búsqueda coincide con el patrón especificado. Esto significa que se usa para probar si una cadena contiene un patrón específico. Por lo tanto, es una herramienta útil para comprobar si una cadena de texto contiene el patrón deseado.
+
   /*
   Acciones que hay que hacer al arrancar la pag:
   - todo en vacio (muñeco, letras...)
@@ -19,9 +25,15 @@ function App() {
   const handleClickCount = (ev) => {
     ev.preventDefault();
     console.log('holis')
-    setNumberOfErrors(numberOfErrors+1)
+    setNumberOfErrors(numberOfErrors + 1)
   }
-  const handleInput = (event) => {
+  const handleInput = (ev) => {
+    setLastLetter(ev.target.value);
+    if (letterOk.test(ev.target.value)) {
+      setLastLetter(ev.target.value)
+    } else {
+      setLastLetter('');
+    }
   }
 
   return (
@@ -58,15 +70,17 @@ function App() {
           </div>
           <form className="form">
             <label className="title" htmlFor="last-letter">Escribe una letra:</label>
-            <input onChange={ handleInput
+            <input onChange={handleInput
             }
               autoComplete="off"
               className="form__input"
               maxLength="1"
               type="text"
               name="last-letter"
-              id="last-letter" /> 
-               <button onClick={handleClickCount}>Contador</button>
+              id="last-letter"
+              value={lastLetter}
+            />
+            <button onClick={handleClickCount}>Contador</button>
           </form>
         </section>
         <section className={"dummy error-" + numberOfErrors}>
@@ -84,7 +98,7 @@ function App() {
           <span className="error-2 line"></span>
           <span className="error-1 line"></span>
         </section>
-      
+
       </main>
     </div>
   );
