@@ -5,8 +5,8 @@ import { useState } from 'react';
 function App() {
 
   //Variables de estado
-  // const [writeLetter, setWriteLetter] = useState('');
-  // const [solution, setSolution] = useState('macarron');
+  const [word, setWord] = useState('katakroker');
+  const [userLetters, setUserLetters] = useState([]);
   const [numberOfErrors, setNumberOfErrors] = useState(0);
   const [lastLetter, setLastLetter] = useState('');
 
@@ -22,11 +22,18 @@ function App() {
   - añadir letra y comprobar si esta se pinta y si no letras fallamas + monigote
   - escribir msj error si repites letra (falladas o acertadas)
   */
+  const renderSolutionLetters = () => {
+    const separador = '';
+    return word.split(separador)
+      .map(eachWord => eachWord.includes(userLetters) ? <li className="letter">{eachWord}</li> : <li className="letter"></li>)
+  }
+
   const handleClickCount = (ev) => {
     ev.preventDefault();
     console.log('holis')
     setNumberOfErrors(numberOfErrors + 1)
   }
+
   const handleInput = (ev) => {
     setLastLetter(ev.target.value);
     if (letterOk.test(ev.target.value)) {
@@ -34,6 +41,8 @@ function App() {
     } else {
       setLastLetter('');
     }
+    setUserLetters(ev.target.value)
+    // return userLetters.push(letter => letter.contains(lastLetter))
   }
 
   return (
@@ -45,8 +54,8 @@ function App() {
         <section>
           <div className="solution">
             <h2 className="title">Solución:</h2>
-            <ul className="letters">
-              <li className="letter">k</li>
+            <ul className="letters" >{renderSolutionLetters()}
+              {/* <li className="letter">k</li>
               <li className="letter">a</li>
               <li className="letter"></li>
               <li className="letter">a</li>
@@ -55,7 +64,7 @@ function App() {
               <li className="letter"></li>
               <li className="letter">k</li>
               <li className="letter">e</li>
-              <li className="letter">r</li>
+              <li className="letter">r</li> */}
             </ul>
           </div>
           <div className="error">
