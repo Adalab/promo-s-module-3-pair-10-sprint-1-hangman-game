@@ -5,10 +5,10 @@ import { useState } from 'react';
 function App() {
 
   //Variables de estado
-  const [word, setWord] = useState('katakroker');
-  const [userLetters, setUserLetters] = useState([]);
-  const [numberOfErrors, setNumberOfErrors] = useState(0);
-  const [lastLetter, setLastLetter] = useState('');
+  const [word, setWord] = useState('katakroker'); //almacenar la palabra que se deberá adivinar.
+  const [userLetters, setUserLetters] = useState([]);//es un array para almacenar las letras que introduce la jugadora.
+  const [numberOfErrors, setNumberOfErrors] = useState([]);
+  const [lastLetter, setLastLetter] = useState(''); //es un string para almacenar la última letra introducida por la jugadora.
 
   //Variables comunes
   const letterOk = /^[a-zA-Zñáéíóúü]$/;
@@ -26,13 +26,21 @@ function App() {
     const separador = '';
     return word.split(separador)
       .map(eachWord => eachWord.includes(userLetters) ? <li className="letter">{eachWord}</li> : <li className="letter"></li>)
+    setWord([])
   }
+  {/*
+  const renderErrorLetters = () => {
+    const filterLetters = userLetters.filter(letter => !word.includes(letter))
+    // setNumberOfErrors(filterLetters);
+    return filterLetters.map(letter => <li className="letter">{letter}</li>)
+  }
+  */}
 
-  const handleClickCount = (ev) => {
-    ev.preventDefault();
-    console.log('holis')
-    setNumberOfErrors(numberOfErrors + 1)
-  }
+  // const handleClickCount = (ev) => {
+  //   ev.preventDefault();
+  //   console.log('holis')
+  //   setNumberOfErrors(numberOfErrors + 1)
+  // }
 
   const handleInput = (ev) => {
     setLastLetter(ev.target.value);
@@ -70,11 +78,11 @@ function App() {
           <div className="error">
             <h2 className="title">Letras falladas:</h2>
             <ul className="letters">
-              <li className="letter">f</li>
+              {/* <li className="letter">f</li>
               <li className="letter">q</li>
               <li className="letter">h</li>
               <li className="letter">p</li>
-              <li className="letter">x</li>
+              <li className="letter">x</li> */}
             </ul>
           </div>
           <form className="form">
@@ -89,7 +97,6 @@ function App() {
               id="last-letter"
               value={lastLetter}
             />
-            <button onClick={handleClickCount}>Contador</button>
           </form>
         </section>
         <section className={"dummy error-" + numberOfErrors}>
