@@ -26,15 +26,14 @@ function App() {
     const separador = '';
     return word.split(separador)
       .map(eachWord => eachWord.includes(userLetters) ? <li className="letter">{eachWord}</li> : <li className="letter"></li>)
-    setWord([])
   }
-  {/*
+
   const renderErrorLetters = () => {
-    const filterLetters = userLetters.filter(letter => !word.includes(letter))
-    // setNumberOfErrors(filterLetters);
-    return filterLetters.map(letter => <li className="letter">{letter}</li>)
+    return userLetters.filter(letter => !word.includes(letter))
+      .map((letter, index) => {
+        return <li key={index} className="letter">{letter}</li>
+      })
   }
-  */}
 
   // const handleClickCount = (ev) => {
   //   ev.preventDefault();
@@ -43,14 +42,15 @@ function App() {
   // }
 
   const handleInput = (ev) => {
-    setLastLetter(ev.target.value);
-    if (letterOk.test(ev.target.value)) {
-      setLastLetter(ev.target.value)
+    const inputValue = ev.target.value;
+    if (letterOk.test(inputValue)) {
+      setLastLetter(inputValue)
     } else {
       setLastLetter('');
     }
-    setUserLetters(ev.target.value)
-    // return userLetters.push(letter => letter.contains(lastLetter))
+    const letters = [...userLetters]
+    letters.push(inputValue)
+    setUserLetters(letters)
   }
 
   return (
@@ -63,26 +63,11 @@ function App() {
           <div className="solution">
             <h2 className="title">Solución:</h2>
             <ul className="letters" >{renderSolutionLetters()}
-              {/* <li className="letter">k</li>
-              <li className="letter">a</li>
-              <li className="letter"></li>
-              <li className="letter">a</li>
-              <li className="letter">k</li>
-              <li className="letter">r</li>
-              <li className="letter"></li>
-              <li className="letter">k</li>
-              <li className="letter">e</li>
-              <li className="letter">r</li> */}
             </ul>
           </div>
           <div className="error">
             <h2 className="title">Letras falladas:</h2>
-            <ul className="letters">
-              {/* <li className="letter">f</li>
-              <li className="letter">q</li>
-              <li className="letter">h</li>
-              <li className="letter">p</li>
-              <li className="letter">x</li> */}
+            <ul className="letters">{renderErrorLetters()}
             </ul>
           </div>
           <form className="form">
