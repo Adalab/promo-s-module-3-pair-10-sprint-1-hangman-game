@@ -6,7 +6,7 @@ import { useEffect , useState } from 'react';
 function App() {
 
   //Variables de estado
-  const [word, setWord] = useState([]); //almacenar la palabra que se deberá adivinar.
+  const [word, setWord] = useState(''); //almacenar la palabra que se deberá adivinar.
   const [userLetters, setUserLetters] = useState([]);//es un array para almacenar las letras que introduce la jugadora.
   const [numberOfErrors, setNumberOfErrors] = useState([]);
   const [lastLetter, setLastLetter] = useState(''); //es un string para almacenar la última letra introducida por la jugadora.
@@ -25,18 +25,18 @@ function App() {
   */
 
   useEffect(() => {
-    callToApi().then((response) => {
-      setWord(response);
+    callToApi().then((word) => {
+      setWord(word);
     })
 
-  },
-  []
+  },[]
   );
 
+  
   const renderSolutionLetters = () => {
     const separador = '';
     return word.split(separador)
-      .map(eachLetter => userLetters.includes(eachLetter) ? <li className="letter">{eachLetter}</li> : <li className="letter"></li>)
+      .map((eachLetter , index) => userLetters.includes(eachLetter) ? <li key={index} className="letter">{eachLetter}</li> : <li className="letter"></li>)
   }
 
   const renderErrorLetters = () => {
