@@ -1,15 +1,16 @@
 import '../styles/App.scss';
 import '../fonts/KgTenThousandReasons-R1ll.ttf';
-import { useState } from 'react';
+import callToApi from '../service/fetch';
+import { useEffect , useState } from 'react';
 
 function App() {
 
   //Variables de estado
-  const [word, setWord] = useState('katakroker'); //almacenar la palabra que se deberá adivinar.
+  const [word, setWord] = useState([]); //almacenar la palabra que se deberá adivinar.
   const [userLetters, setUserLetters] = useState([]);//es un array para almacenar las letras que introduce la jugadora.
   const [numberOfErrors, setNumberOfErrors] = useState([]);
   const [lastLetter, setLastLetter] = useState(''); //es un string para almacenar la última letra introducida por la jugadora.
-
+  
   //Variables comunes
   const letterOk = /^[a-zA-Zñáéíóúü]$/;
   //test: devuelve verdadero o falso si la cadena de búsqueda coincide con el patrón especificado. Esto significa que se usa para probar si una cadena contiene un patrón específico. Por lo tanto, es una herramienta útil para comprobar si una cadena de texto contiene el patrón deseado.
@@ -22,10 +23,20 @@ function App() {
   - añadir letra y comprobar si esta se pinta y si no letras fallamas + monigote
   - escribir msj error si repites letra (falladas o acertadas)
   */
+
+  useEffect(() => {
+    callToApi().then((response) => {
+      setWord(response);
+    })
+
+  },
+  []
+  );
+
   const renderSolutionLetters = () => {
     const separador = '';
     return word.split(separador)
-      .map(eachWord => eachWord.includes(userLetters) ? <li className="letter">{eachWord}</li> : <li className="letter"></li>)
+      .map(eachLetter => userLetters.includes(eachLetter) ? <li className="letter">{eachLetter}</li> : <li className="letter"></li>)
   }
 
   const renderErrorLetters = () => {
@@ -51,7 +62,9 @@ function App() {
     const letters = [...userLetters]
     letters.push(inputValue)
     setUserLetters(letters)
+    
   }
+  
 
   return (
     <div className="page">
@@ -72,8 +85,7 @@ function App() {
           </div>
           <form className="form">
             <label className="title" htmlFor="last-letter">Escribe una letra:</label>
-            <input onChange={handleInput
-            }
+            <input onChange={handleInput}
               autoComplete="off"
               className="form__input"
               maxLength="1"
